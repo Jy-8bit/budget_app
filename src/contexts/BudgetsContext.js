@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react"
 import { ButtonGroup } from "react-bootstrap"
 import { Prev } from "react-bootstrap/esm/PageItem"
 import { v4 as uuidv4 } from 'uuid'
+import useLocalStorage from "../hooks/useLocalStorage"
 
 
 const BudgetsContext = React.createContext()
@@ -15,8 +16,8 @@ export function useBudgets() {
 
 
 export const BudgetsProvider = ({ children }) => {
-  const [budgets, setBudgets] = useState([])
-  const [expenses, setExpense] = useState([])
+  const [budgets, setBudgets] = useLocalStorage("budgets", [])
+  const [expenses, setExpense] = useLocalStorage("exoenses", [])
 
 
   function getBudgetsExpenses(budgetId) {
@@ -38,6 +39,7 @@ export const BudgetsProvider = ({ children }) => {
 
   }
   function deleteBudget({ id }) {
+    // todo deal with uncategorized
     setBudgets(prevBudgets => {
       return prevBudgets.filter(budgets => budgets.id !== id)
     })
